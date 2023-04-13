@@ -1,24 +1,14 @@
-# modrinthpubdash
+# Modrinth Publisher Dashboard
 
-## Project setup
-```
-pnpm install
-```
+An unofficial android app to track your modrinth statistics.
 
-### Compiles and hot-reloads for development
-```
-pnpm run serve
-```
+- Uses [Omorphia](https://omorphia.modrinth.com/) for Vue components.
+- Uses [CapacitorJS](https://capacitorjs.com/) to compile the vue web app to android.
 
-### Compiles and minifies for production
-```
-pnpm run build
-```
+## Features
 
-### Lints and fixes files
-```
-pnpm run lint
-```
+Currently, I plan to have feature parity with the Analytics page on the modrinth website.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## IOS Support
+
+I cannot provide IOS support myself because I do not have any apple devices. However, you can add it yourself. Check the CapacitorJS documentation for information on adding IOS as a build target.

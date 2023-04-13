@@ -4,7 +4,7 @@
       {{ error }}
     </Card>
     <p>
-      You have not entered your modrinth token yet - Modrinth Publisher
+      You have not entered your modrinth token yet.<br>Modrinth Publisher
       Dashboard is unable to authenticate with the Modrinth API.
     </p>
     <input type="text" v-model="token" placeholder="Token" />
@@ -42,7 +42,7 @@ export default {
 
 <style>
 .error-card {
-  background-color: var(--color-red);
+  background-color: var(--color-red) !important;
   color: var(--color-contrast);
 }
 </style>
