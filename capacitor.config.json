@@ -1,0 +1,6 @@
+{
+  "appId": "com.mineblock11.modrinthdash",
+  "appName": "modrinthpubdash",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
