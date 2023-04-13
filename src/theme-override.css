@@ -1,0 +1,41 @@
+@import url('https://rsms.me/inter/inter.css');
+
+html {
+  --color-bg: #16181c !important;
+  --color-raised-bg: #26292f !important;
+  --color-button-bg: hsl(222, 13%, 30%) !important;
+
+  --color-base: var(--dark-color-base) !important;
+  --color-contrast: var(--dark-color-contrast) !important;
+  --color-accent-contrast: #000000 !important;
+
+  --color-red: #ff496e !important;
+  --color-orange: #ffa347 !important;
+  --color-green: #1bd96a !important;
+  --color-blue: #4f9cff !important;
+  --color-purple: #c78aff !important;
+  --color-gray: #9fa4b3 !important;
+
+  --color-ad: #1f324a !important;
+  --color-ad-raised: #2e4057 !important;
+
+  --color-brand: var(--color-green) !important;
+  --color-brand-highlight: rgba(27, 217, 106, 0.25) !important;
+  --color-brand-shadow: rgba(27, 217, 106, 0.7) !important;
+
+  --shadow-inset-lg: inset 0px -2px 2px hsla(221, 39%, 11%, 0.1) !important;
+  --shadow-inset: inset 0px -2px 2px hsla(221, 39%, 11%, 0.05) !important;
+  --shadow-inset-sm: inset 0px -1px 1px hsla(221, 39%, 11%, 0.25) !important;
+
+  --shadow-raised-lg: 0px 2px 4px hsla(221, 39%, 11%, 0.2) !important;
+  --shadow-raised: 0px -2px 4px hsla(221, 39%, 11%, 0.1) !important;
+  --shadow-floating: hsla(0, 0%, 0%, 0) 0px 0px 0px 0px,
+    hsla(0, 0%, 0%, 0) 0px 0px 0px 0px, hsla(0, 0%, 0%, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px !important;
+
+  --shadow-card: rgba(0, 0, 0, 0.25) 0px 2px 4px 0px !important;
+}
+
+#app {
+  padding: 5%;
+}

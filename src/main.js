@@ -1,4 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+import Omorphia from 'omorphia'
+import '../node_modules/omorphia/dist/style.css'
+import './theme-override.css'
+
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+createApp(App)
+    .use(Omorphia)
+    .use(VueAxios, axios)
+    .mount('#app')
