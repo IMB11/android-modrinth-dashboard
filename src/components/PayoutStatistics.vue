@@ -36,8 +36,7 @@ export default {
       this.payoutInfo.last_month =
         Math.floor(this.payoutInfo.last_month * 100) / 100;
     },
-  },
-  async mounted() {},
+  }
 };
 </script>
 

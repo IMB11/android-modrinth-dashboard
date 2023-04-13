@@ -3,3 +3,16 @@
 #app {
   padding: 5%;
 }
+
+.animated-dropdown {
+  flex-grow: 1;
+}
+
+.responsive {
+  display: flex;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: none !important;
+}

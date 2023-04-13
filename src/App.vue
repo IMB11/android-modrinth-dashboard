@@ -13,14 +13,15 @@
           <Button class="logout" @click="handleLogout()">Logout</Button>
         </div>
       </Card>
-      <Card class="responsive_dropdown_fix">
+      <Card class="responsive">
         <DropdownSelect
-          id="report-type"
           v-model="currentPage"
           :options="['Payouts', 'Projects', 'Settings']"
         />
       </Card>
-      <PayoutStatistics :user="userInfo" />
+      <PayoutStatistics v-if="currentPage === 'Payouts'" :user="userInfo" />
+      <ProjectStatistics v-if="currentPage === 'Projects'" />
+      <SettingsPage v-if="currentPage === 'Settings'" :initial-theme="theme" @changed-theme="handleTheme"/>
     </div>
   </div>
 </template>
@@ -28,6 +29,8 @@
 <script>
 import SaveTokenModal from "@/components/SaveTokenModal.vue";
 import PayoutStatistics from "@/components/PayoutStatistics.vue";
+import ProjectStatistics from "./components/ProjectStatistics.vue";
+import SettingsPage from "./components/SettingsPage.vue";
 
 export default {
   name: "App",
@@ -37,13 +40,15 @@ export default {
       token: "NaN",
       userInfo: {},
       currentPage: "Payouts",
-      theme: "light"
+      theme: "Light"
     };
   },
   components: {
     SaveTokenModal,
-    PayoutStatistics
-  },
+    PayoutStatistics,
+    ProjectStatistics,
+    SettingsPage
+},
   methods: {
     async handleToken(tkn) {
       this.token = tkn;
@@ -57,7 +62,7 @@ export default {
     handleTheme(newTheme) {
       this.theme = newTheme;
       localStorage.theme = this.theme;
-      window.applyNewTheme(this.theme)
+      window.applyNewTheme(this.theme);
     },
     handleLogout() {
       this.token = undefined;
@@ -92,14 +97,6 @@ export default {
 </script>
 
 <style>
-.animated-dropdown {
-  flex-grow: 1;
-}
-
-.responsive_dropdown_fix {
-  display: flex;
-}
-
 .profile_info {
   display: flex;
   align-items: center;
