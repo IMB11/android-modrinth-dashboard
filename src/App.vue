@@ -15,7 +15,8 @@
       </Card>
       <Card class="responsive">
         <DropdownSelect
-          v-model="currentPage"
+          :default-value="currentPage"
+          @change="(newPage) => currentPage = newPage.option"
           :options="['Payouts', 'Projects', 'Settings']"
         />
       </Card>

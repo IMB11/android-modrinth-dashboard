@@ -1,6 +1,6 @@
 {
   "appId": "com.mineblock11.modrinthdash",
-  "appName": "modrinthpubdash",
+  "appName": "Modrinth Dashboard",
   "webDir": "dist",
   "bundledWebRuntime": false
 }
