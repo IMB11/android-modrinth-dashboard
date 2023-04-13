@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
 export default {
   props: ["user"],
   data: () => {
@@ -36,7 +37,18 @@ export default {
       this.payoutInfo.last_month =
         Math.floor(this.payoutInfo.last_month * 100) / 100;
     },
-  }
+  },
+  async mounted() {
+    this.payoutInfo = (
+      await this.axios.get(
+        `https://api.modrinth.com/v2/user/${this.user.id}/payouts`
+      )
+    ).data;
+
+    this.payoutInfo.all_time = Math.floor(this.payoutInfo.all_time * 100) / 100;
+    this.payoutInfo.last_month =
+      Math.floor(this.payoutInfo.last_month * 100) / 100;
+  },
 };
 </script>
 
