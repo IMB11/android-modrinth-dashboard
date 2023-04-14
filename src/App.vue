@@ -17,13 +17,18 @@
         <DropdownSelect
           name="dropdown-currentpage"
           :default-value="currentPage"
-          @change="(newPage) => currentPage = newPage.option"
-          :options="['Payouts', 'Projects', 'Settings']"
+          @change="(newPage) => (currentPage = newPage.option)"
+          :options="['Payouts', 'Projects', 'Notifications', 'Settings']"
         />
       </Card>
-      <PayoutStatistics v-if="currentPage === 'Payouts'" :user="store.user" />
+      <PayoutStatistics v-if="currentPage === 'Payouts'" />
       <ProjectStatistics v-if="currentPage === 'Projects'" />
-      <SettingsPage v-if="currentPage === 'Settings'" :initial-theme="theme" @changed-theme="handleTheme"/>
+      <SettingsPage
+        v-if="currentPage === 'Settings'"
+        :initial-theme="theme"
+        @changed-theme="handleTheme"
+      />
+      <NotificationsPage v-if="currentPage === 'Notifications'" />
     </div>
   </div>
 </template>
@@ -33,7 +38,8 @@ import SaveTokenModal from "@/components/SaveTokenModal.vue";
 import PayoutStatistics from "@/components/PayoutStatistics.vue";
 import ProjectStatistics from "./components/ProjectStatistics.vue";
 import SettingsPage from "./components/SettingsPage.vue";
-import { store } from "./store.js"
+import NotificationsPage from "./components/NotificationsPage.vue";
+import { store } from "@/store";
 
 export default {
   name: "App",
@@ -43,23 +49,45 @@ export default {
       token: "NaN",
       store,
       currentPage: "Payouts",
-      theme: "Light"
+      theme: "Light",
     };
   },
   components: {
     SaveTokenModal,
     PayoutStatistics,
     ProjectStatistics,
-    SettingsPage
-},
+    SettingsPage,
+    NotificationsPage,
+  },
   methods: {
     async handleToken(tkn) {
       this.token = tkn;
       this.hasSavedToken = true;
       localStorage.token = this.token;
 
+      this.axios.defaults.headers.common.Authorization = this.token;
+
       this.store.user = (
         await this.axios.get("https://api.modrinth.com/v2/user")
+      ).data;
+
+      this.store.payoutInfo = (
+        await this.axios.get(
+          `https://api.modrinth.com/v2/user/${this.store.user.id}/payouts`
+        )
+      ).data;
+
+      this.store.payoutInfo.all_time =
+        Math.floor(this.store.payoutInfo.all_time * 100) / 100;
+      this.store.payoutInfo.last_month =
+        Math.floor(this.store.payoutInfo.last_month * 100) / 100;
+      this.store.payoutInfo.balance =
+        Math.floor(this.store.user.payout_data.balance * 100) / 100;
+
+      this.store.notifications = (
+        await this.axios.get(
+          `https://api.modrinth.com/v2/user/${this.user.id}/notifications`
+        )
       ).data;
     },
     handleTheme(newTheme) {
@@ -80,22 +108,15 @@ export default {
       "Android App (mineblock11/modrinthpubdash)";
 
     if (localStorage.token !== undefined) {
-      this.hasSavedToken = true;
-      this.token = localStorage.token;
-
-      this.axios.defaults.headers.common.Authorization = this.token;
-
-      this.store.user = (
-        await this.axios.get("https://api.modrinth.com/v2/user")
-      ).data;
+      await this.handleToken(localStorage.token);
     }
 
-    if(localStorage.theme === undefined) {
+    if (localStorage.theme === undefined) {
       localStorage.theme = this.theme;
     }
 
     this.theme = localStorage.theme;
-    window.applyNewTheme(this.theme)
+    window.applyNewTheme(this.theme);
   },
 };
 </script>

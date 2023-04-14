@@ -14,7 +14,7 @@ An unofficial android app to track your modrinth statistics.
 ### Contents
 
 - [Features](#features)
-- [Compiling](#compiling)
+- [Development](#development)
 - [IOS Support](#ios-support)
 
 ## Features
@@ -32,11 +32,7 @@ Currently, I plan to have feature parity with the Analytics page on the modrinth
   + [ ] This months downloads
   + [ ] Total follows
   + [ ] This months follows
-- Notification section
-  + [ ] Dismiss Notifications
-  + [ ] Ignore from certain projects
-  + [ ] Filter
-  + [ ] Search
+- [x] Notification section
 - Settings Section
   + [x] Theme Switcher
   + [ ] Account Switcher (hotswap between multiple accounts)
