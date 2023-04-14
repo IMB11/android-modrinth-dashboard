@@ -1,3 +1,5 @@
+<img src="/resources/icon.png" width="125" height="auto" align="left" />
+
 # Modrinth Publisher Dashboard
 
 An unofficial android app to track your modrinth statistics.
