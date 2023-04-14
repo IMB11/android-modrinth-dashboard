@@ -1,5 +1,3 @@
-<img src="/resources/icon.png" width="125" height="auto" align="left" />
-
 # Modrinth Publisher Dashboard
 
 An unofficial android app to track your modrinth statistics.
@@ -12,6 +10,12 @@ An unofficial android app to track your modrinth statistics.
 
 - Uses [Omorphia](https://omorphia.modrinth.com/) for Vue components.
 - Uses [CapacitorJS](https://capacitorjs.com/) to compile the vue web app to android.
+
+### Contents
+
+- [Features](#features)
+- [Compiling](#compiling)
+- [IOS Support](#ios-support)
 
 ## Features
 
@@ -38,7 +42,25 @@ Currently, I plan to have feature parity with the Analytics page on the modrinth
   + [ ] Account Switcher (hotswap between multiple accounts)
   + [ ] Push Notifications
 
-## Compiling
+## Development
+
+If you wish to contribute to the UI stuff, all you need to do is:
+
+```bash
+pnpm install
+pnpm run serve
+```
+
+If you wish to push a debug apk to your android device, you will need to run the following:
+
+```bash
+pnpm install
+pnpm run build
+npx cap sync
+npx cap run android
+```
+
+If you want to build an apk, you will need to open the `android` folder in Android Studio v2022+
 
 ## IOS Support
 
