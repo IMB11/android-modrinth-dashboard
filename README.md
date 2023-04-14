@@ -14,7 +14,28 @@ An unofficial android app to track your modrinth statistics.
 
 ## Features
 
-Currently, I plan to have feature parity with the Analytics page on the modrinth website.
+Currently, I plan to have feature parity with the Analytics page on the modrinth website:
+
+- Payout section
+  + [x] Total revenue
+  + [x] This months revenue
+  + [ ] Transaction History
+  + [ ] Create new transaction
+- Project section
+  Some items in this section wont be available until they're added to knossos.
+  + [ ] Total downloads
+  + [ ] This months downloads
+  + [ ] Total follows
+  + [ ] This months follows
+- Notification section
+  + [ ] Dismiss Notifications
+  + [ ] Ignore from certain projects
+  + [ ] Filter
+  + [ ] Search
+- Settings Section
+  + [x] Theme Switcher
+  + [ ] Account Switcher (hotswap between multiple accounts)
+  + [ ] Push Notifications
 
 ## IOS Support
 
