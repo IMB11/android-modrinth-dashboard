@@ -6,11 +6,11 @@
         <h4>Theme</h4>
       </label>
       <DropdownSelect
+        name="dropdown-theme"
         id="theme-dropdown"
-        v-model="theme"
         :options="['Dark', 'Light']"
         :default-value="initialTheme"
-        @change="() => $emit('changedTheme', theme)"
+        @change="(val) => $emit('changedTheme', val.option)"
       />
     </div>
   </Card>
@@ -19,15 +19,7 @@
 <script>
 export default {
   props: ["initialTheme"],
-  emits: ["changedTheme"],
-  data: () => {
-    return {
-      theme: '',
-    };
-  },
-  mounted() {
-    this.theme = this.$props.initialTheme;
-  }
+  emits: ["changedTheme"]
 };
 </script>
 

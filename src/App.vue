@@ -7,20 +7,21 @@
       <Card>
         <div class="profile_info">
           <div class="profile_avatar">
-            <Avatar size="sm" circle :src="userInfo.avatar_url" />
-            <p>{{ userInfo.username }}</p>
+            <Avatar size="sm" circle :src="store.user.avatar_url" />
+            <p>{{ store.user.username }}</p>
           </div>
           <Button class="logout" @click="handleLogout()">Logout</Button>
         </div>
       </Card>
       <Card class="responsive">
         <DropdownSelect
+          name="dropdown-currentpage"
           :default-value="currentPage"
           @change="(newPage) => currentPage = newPage.option"
           :options="['Payouts', 'Projects', 'Settings']"
         />
       </Card>
-      <PayoutStatistics v-if="currentPage === 'Payouts'" :user="userInfo" />
+      <PayoutStatistics v-if="currentPage === 'Payouts'" :user="store.user" />
       <ProjectStatistics v-if="currentPage === 'Projects'" />
       <SettingsPage v-if="currentPage === 'Settings'" :initial-theme="theme" @changed-theme="handleTheme"/>
     </div>
@@ -32,6 +33,7 @@ import SaveTokenModal from "@/components/SaveTokenModal.vue";
 import PayoutStatistics from "@/components/PayoutStatistics.vue";
 import ProjectStatistics from "./components/ProjectStatistics.vue";
 import SettingsPage from "./components/SettingsPage.vue";
+import { store } from "./store.js"
 
 export default {
   name: "App",
@@ -39,7 +41,7 @@ export default {
     return {
       hasSavedToken: false,
       token: "NaN",
-      userInfo: {},
+      store,
       currentPage: "Payouts",
       theme: "Light"
     };
@@ -56,7 +58,7 @@ export default {
       this.hasSavedToken = true;
       localStorage.token = this.token;
 
-      this.userInfo = (
+      this.store.user = (
         await this.axios.get("https://api.modrinth.com/v2/user")
       ).data;
     },
@@ -69,10 +71,11 @@ export default {
       this.token = undefined;
       this.hasSavedToken = false;
       localStorage.token = this.token;
+      this.store.user = {};
       this.axios.defaults.headers.common.Authorization = this.token;
     },
   },
-  async mounted() {
+  async beforeMount() {
     this.axios.defaults.httpsAgent =
       "Android App (mineblock11/modrinthpubdash)";
 
@@ -82,7 +85,7 @@ export default {
 
       this.axios.defaults.headers.common.Authorization = this.token;
 
-      this.userInfo = (
+      this.store.user = (
         await this.axios.get("https://api.modrinth.com/v2/user")
       ).data;
     }

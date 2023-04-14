@@ -2,7 +2,6 @@
 
 An unofficial android app to track your modrinth statistics.
 
-
 <div align="center">
 <img src="https://user-images.githubusercontent.com/93472213/231879232-db0f65a1-7a4e-4a6f-8bfc-eeffa099b7a4.png" width="auto" height="350px" />  
 <img src="https://user-images.githubusercontent.com/93472213/231879101-0886958a-723d-4ab1-9766-68b87d06541b.png" width="auto" height="350px" />  
@@ -19,7 +18,7 @@ Currently, I plan to have feature parity with the Analytics page on the modrinth
 - Payout section
   + [x] Total revenue
   + [x] This months revenue
-  + [ ] Transaction History
+  + [x] Transaction History
   + [ ] Create new transaction
 - Project section
   Some items in this section wont be available until they're added to knossos.
@@ -36,6 +35,8 @@ Currently, I plan to have feature parity with the Analytics page on the modrinth
   + [x] Theme Switcher
   + [ ] Account Switcher (hotswap between multiple accounts)
   + [ ] Push Notifications
+
+## Compiling
 
 ## IOS Support
 
