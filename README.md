@@ -3,9 +3,11 @@
 An unofficial android app to track your modrinth statistics.
 
 <div align="center">
-<img src="https://user-images.githubusercontent.com/93472213/231879232-db0f65a1-7a4e-4a6f-8bfc-eeffa099b7a4.png" width="auto" height="350px" />  
-<img src="https://user-images.githubusercontent.com/93472213/231879101-0886958a-723d-4ab1-9766-68b87d06541b.png" width="auto" height="350px" />  
-<img src="https://user-images.githubusercontent.com/93472213/231878677-fa5c9a92-990c-4952-b4a7-59a2394109ae.png" width="auto" height="350px" />  
+  <img width="200" src="https://i.imgur.com/wszkIOG.png" />
+  <img width="200" src="https://i.imgur.com/j6nVB0J.png" />
+  <img width="200" src="https://i.imgur.com/Jz62lSa.png" />
+  <img width="200" src="https://i.imgur.com/fpBdTHV.png" />
+  <img width="200" src="https://i.imgur.com/AKbzI8O.png" />
 </div>
 
 - Uses [Omorphia](https://omorphia.modrinth.com/) for Vue components.
