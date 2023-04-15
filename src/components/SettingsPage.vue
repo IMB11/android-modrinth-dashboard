@@ -18,9 +18,11 @@
         <label for="abreviate-checkbox">
           <h4>Abreviate Counts</h4>
         </label>
+        <!-- Cant mutate props :( -->
         <Toggle
           name="dropdown-theme"
           id="abreviate-checkbox"
+          
           :checked="settings.abreviate_downloads"
           v-model="abreviate_downloads_passthrough"
         />
@@ -42,6 +44,7 @@ export default {
   watch: {
     // eslint-disable-next-line no-unused-vars
     abreviate_downloads_passthrough(newVal, oldVal) {
+      console.log(this.abreviate_downloads_passthrough)
       this.$emit(
         "changedAbreviateDownloads",
         this.abreviate_downloads_passthrough
@@ -50,6 +53,9 @@ export default {
   },
   props: ["settings"],
   emits: ["changedTheme", "changedAbreviateDownloads"],
+  mounted() {
+    this.abreviate_downloads_passthrough = this.settings.abreviate_downloads
+  }
 };
 </script>
 
