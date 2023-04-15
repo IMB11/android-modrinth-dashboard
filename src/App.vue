@@ -1,18 +1,10 @@
 <template>
   <div>
-    <Card v-if="!hasSavedToken">
+    <Card v-if="settings.token === undefined">
       <SaveTokenModal @confirmed="(tkn) => handleToken(tkn)" />
     </Card>
     <div v-else>
-      <Card>
-        <div class="profile_info">
-          <div class="profile_avatar">
-            <Avatar size="sm" circle :src="store.user.avatar_url" />
-            <p>{{ store.user.username }}</p>
-          </div>
-          <Button class="logout" @click="handleLogout()">Logout</Button>
-        </div>
-      </Card>
+      <UserInfoCard />
       <Card class="responsive">
         <DropdownSelect
           name="dropdown-currentpage"
@@ -35,13 +27,13 @@ import PayoutStatistics from "@/components/PayoutStatistics.vue";
 import ProjectStatistics from "./components/ProjectStatistics.vue";
 import SettingsPage from "./components/SettingsPage.vue";
 import NotificationsPage from "./components/NotificationsPage.vue";
-import { store, settings } from "@/store";
+import { store, settings, populateStoreData } from "@/store";
+import UserInfoCard from "./components/UserInfoCard.vue";
 
 export default {
   name: "App",
   data: () => {
     return {
-      hasSavedToken: false,
       store,
       settings,
     };
@@ -52,83 +44,36 @@ export default {
     ProjectStatistics,
     SettingsPage,
     NotificationsPage,
+    UserInfoCard,
   },
   methods: {
     async handleToken(tkn) {
       this.settings.token = tkn;
-      this.hasSavedToken = true;
-      localStorage.token = this.settings.token;
-
-      this.axios.defaults.headers.common.Authorization = this.settings.token;
-
-      this.store.user = (
-        await this.axios.get("https://api.modrinth.com/v2/user")
-      ).data;
-
-      this.store.payoutInfo = (
-        await this.axios.get(
-          `https://api.modrinth.com/v2/user/${this.store.user.id}/payouts`
-        )
-      ).data;
-
-      this.store.payoutInfo.all_time =
-        Math.floor(this.store.payoutInfo.all_time * 100) / 100;
-      this.store.payoutInfo.last_month =
-        Math.floor(this.store.payoutInfo.last_month * 100) / 100;
-      this.store.payoutInfo.balance =
-        Math.floor(this.store.user.payout_data.balance * 100) / 100;
-
-      this.store.notifications = (
-        await this.axios.get(
-          `https://api.modrinth.com/v2/user/${this.store.user.id}/notifications`
-        )
-      ).data;
+      populateStoreData(this.settings.token, this.axios, this.store);
     },
-    handleLogout() {
-      this.settings.token = undefined;
-      this.hasSavedToken = false;
-      localStorage.token = this.settings.token;
-      this.store.user = {};
-      this.axios.defaults.headers.common.Authorization = this.settings.token;
+  },
+  watch: {
+    settings: {
+      deep: true,
+      // eslint-disable-next-line no-unused-vars
+      handler: function (newVal, oldVal) {
+        localStorage.settings = JSON.stringify(this.settings);
+        window.applyNewTheme(this.settings.theme);
+      },
     },
   },
   async beforeMount() {
     this.axios.defaults.httpsAgent =
       "Android App (mineblock11/modrinthpubdash)";
 
-    if (localStorage.token !== undefined) {
-      await this.handleToken(localStorage.token);
+    if (localStorage.settings !== undefined) {
+      this.settings = JSON.parse(localStorage.settings);
+      populateStoreData(this.settings.token, this.axios, this.store);
     }
 
-    if (localStorage.theme === undefined) {
-      localStorage.theme = this.settings.theme;
-    }
-
-    this.settings.theme = localStorage.theme;
     window.applyNewTheme(this.settings.theme);
   },
 };
 </script>
 
-<style>
-.profile_info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.profile_avatar {
-  display: flex;
-  align-items: center;
-}
-
-.profile_avatar > p {
-  margin-left: 12px;
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-text);
-}
-
-.profile_info > .logout_btn {
-  margin: auto;
-}
-</style>
+<style></style>

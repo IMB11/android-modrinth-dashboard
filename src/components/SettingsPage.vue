@@ -10,9 +10,14 @@
           name="dropdown-theme"
           id="theme-dropdown"
           :options="['Dark', 'Light']"
-          :default-value="settings.theme"
-          @change="handleThemeChange"
+          v-model="settings.theme"
         />
+      </div>
+      <div class="responsive">
+        <label for="abr-downloads">
+          <h4>Abbreviate Downloads</h4>
+        </label>
+        <Toggle id="abr-downloads" v-model="settings.abreviate_downloads" />
       </div>
     </div>
   </Card>
@@ -27,14 +32,7 @@ export default {
       settings,
       store,
     };
-  },
-  methods: {
-    handleThemeChange(value) {
-      this.settings.theme = value.option;
-      localStorage.theme = this.settings.theme;
-      window.applyNewTheme(this.settings.theme);
-    },
-  },
+  }
 };
 </script>
 
@@ -46,7 +44,7 @@ label {
 }
 
 .responsive:nth-child(1) {
-  flex-grow: 1;
+  flex-shrink: 1;
 }
 
 .responsive {

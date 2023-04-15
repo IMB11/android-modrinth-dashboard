@@ -42,8 +42,6 @@ import { capitalize } from "vue";
 export default {
   data: () => {
     return {
-      payoutInfo: {},
-      balance: 0,
       store,
       capitalize
     };
