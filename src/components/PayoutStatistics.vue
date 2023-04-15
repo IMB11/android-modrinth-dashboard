@@ -5,15 +5,15 @@
       <div class="grid-display">
         <div class="grid-display__item">
           <div class="label">Total Revenue</div>
-          <div class="value">${{ store.payoutInfo.all_time }}</div>
+          <div class="value">${{ store.balance_all_time }}</div>
         </div>
         <div class="grid-display__item">
           <div class="label">Last Month Revenue</div>
-          <div class="value">${{ store.payoutInfo.last_month }}</div>
+          <div class="value">${{ store.balance_last_month }}</div>
         </div>
         <div class="grid-display__item">
           <div class="label">Balance</div>
-          <div class="value">${{ store.payoutInfo.balance }}</div>
+          <div class="value">${{ store.balance }}</div>
         </div>
       </div>
     </Card>

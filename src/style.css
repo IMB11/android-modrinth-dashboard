@@ -31,6 +31,7 @@
   grid-gap: var(--gap-md);
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }
+
 .grid-display .grid-display__item {
   display: flex;
   flex-grow: 1;
@@ -42,18 +43,25 @@
   gap: var(--gap-md);
 }
 .grid-display .grid-display__item .label {
-  color: var(--color-heading);
+  color: var(--color-base);
   font-weight: bold;
   font-size: 1rem;
 }
 .grid-display .grid-display__item .value {
-  color: var(--color-text-dark);
+  color: var(--color-contrast);
   font-weight: bold;
   font-size: 2rem;
 }
 .grid-display .grid-display__item .goto-link {
   margin-top: auto;
 }
+
+.grid-display .grid-display__item .smaller-value {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-base)
+}
+
 .grid-display.width-12 {
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }

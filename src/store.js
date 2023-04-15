@@ -10,13 +10,14 @@ export const settings = reactive({
 export const store = reactive({
     user: {},
     payoutInfo: {},
+    projects: {
+        length: 0
+    },
     notifications: [
     ]
 });
 
-export const populateStoreData = async (token, axios, store) => {
-    axios.defaults.headers.common.Authorization = token;
-
+export const populateStoreData = async (axios, store) => {
     store.user = (
       await axios.get("https://api.modrinth.com/v2/user")
     ).data;
@@ -27,11 +28,11 @@ export const populateStoreData = async (token, axios, store) => {
       )
     ).data;
 
-    store.payoutInfo.all_time =
+    store.balance_all_time =
       Math.floor(store.payoutInfo.all_time * 100) / 100;
-    store.payoutInfo.last_month =
+    store.balance_last_month =
       Math.floor(store.payoutInfo.last_month * 100) / 100;
-    store.payoutInfo.balance =
+    store.balance =
       Math.floor(store.user.payout_data.balance * 100) / 100;
 
     store.notifications = (
@@ -40,12 +41,12 @@ export const populateStoreData = async (token, axios, store) => {
       )
     ).data;
 
-    store.user.projects = (
+    store.projects = (
       await axios.get(
         `https://api.modrinth.com/v2/user/${store.user.id}/projects`
       )
     ).data;
 
-    store.user.total_downloads = store.user.projects.map(project => project.downloads).reduce((prev, next) => prev + next);
-    store.user.total_followers = store.user.projects.map(project => project.followers).reduce((prev, next) => prev + next);
+    store.total_downloads = store.projects.map(project => project.downloads).reduce((prev, next) => prev + next);
+    store.total_followers = store.projects.map(project => project.followers).reduce((prev, next) => prev + next);
 }

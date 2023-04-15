@@ -14,8 +14,13 @@
         />
       </Card>
       <PayoutStatistics v-if="settings.currentPage === 'Payouts'" />
-      <ProjectStatistics v-if="settings.currentPage === 'Projects'" />
-      <SettingsPage v-if="settings.currentPage === 'Settings'" />
+      <ProjectStatistics :settings="settings" v-if="settings.currentPage === 'Projects'" />
+      <SettingsPage
+        v-if="settings.currentPage === 'Settings'"
+        :settings="settings"
+        @changed-theme="(theme) => (settings.theme = theme)"
+        @changed-abreviate-downloads="(val) => (settings.abreviate_downloads = val)"
+      />
       <NotificationsPage v-if="settings.currentPage === 'Notifications'" />
     </div>
   </div>
@@ -49,7 +54,10 @@ export default {
   methods: {
     async handleToken(tkn) {
       this.settings.token = tkn;
-      populateStoreData(this.settings.token, this.axios, this.store);
+      this.axios.defaults.headers.common.Authorization = this.settings.token;
+
+      localStorage.settings = JSON.stringify(this.settings);
+      populateStoreData(this.axios, this.store);
     },
   },
   watch: {
@@ -68,7 +76,8 @@ export default {
 
     if (localStorage.settings !== undefined) {
       this.settings = JSON.parse(localStorage.settings);
-      populateStoreData(this.settings.token, this.axios, this.store);
+      this.axios.defaults.headers.common.Authorization = this.settings.token;
+      populateStoreData(this.axios, this.store);
     }
 
     window.applyNewTheme(this.settings.theme);

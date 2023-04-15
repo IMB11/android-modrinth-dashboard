@@ -39,16 +39,17 @@ export default {
     handleLogout() {
       this.settings.token = undefined;
       this.hasSavedToken = false;
-      localStorage.token = this.settings.token;
       this.store.user = {};
       this.axios.defaults.headers.common.Authorization = this.settings.token;
+
+      localStorage.settings = JSON.stringify(this.settings);
     },
     async handleRefresh() {
       if (this.disableRefresh) return;
 
       this.disableRefresh = true;
 
-      populateStoreData(this.settings.token, this.axios, this.store)
+      populateStoreData(this.axios, this.store)
 
       setTimeout(() => {
         this.disableRefresh = false;

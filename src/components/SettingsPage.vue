@@ -10,29 +10,46 @@
           name="dropdown-theme"
           id="theme-dropdown"
           :options="['Dark', 'Light']"
-          v-model="settings.theme"
+          :default-value="settings.theme"
+          @change="(val) => $emit('changedTheme', val.option)"
         />
       </div>
       <div class="responsive">
-        <label for="abr-downloads">
-          <h4>Abbreviate Downloads</h4>
+        <label for="abreviate-checkbox">
+          <h4>Abreviate Counts</h4>
         </label>
-        <Toggle id="abr-downloads" v-model="settings.abreviate_downloads" />
+        <Toggle
+          name="dropdown-theme"
+          id="abreviate-checkbox"
+          :checked="settings.abreviate_downloads"
+          v-model="abreviate_downloads_passthrough"
+        />
       </div>
     </div>
   </Card>
 </template>
 
 <script>
-import { settings, store } from "@/store";
+import { store } from "@/store";
 
 export default {
   data: () => {
     return {
-      settings,
       store,
+      abreviate_downloads_passthrough: false,
     };
-  }
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    abreviate_downloads_passthrough(newVal, oldVal) {
+      this.$emit(
+        "changedAbreviateDownloads",
+        this.abreviate_downloads_passthrough
+      );
+    },
+  },
+  props: ["settings"],
+  emits: ["changedTheme", "changedAbreviateDownloads"],
 };
 </script>
 
@@ -44,11 +61,11 @@ label {
 }
 
 .responsive:nth-child(1) {
-  flex-shrink: 1;
 }
 
 .responsive {
   gap: 10%;
+  justify-content: space-between;
 }
 
 .settings-row {
@@ -57,7 +74,7 @@ label {
 }
 
 .settings-row > * {
-  margin-top: 2%;
-  margin-bottom: 2%;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 </style>
