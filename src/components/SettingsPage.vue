@@ -10,8 +10,8 @@
           name="dropdown-theme"
           id="theme-dropdown"
           :options="['Dark', 'Light']"
-          :default-value="initialTheme"
-          @change="(val) => $emit('changedTheme', val.option)"
+          :default-value="settings.theme"
+          @change="handleThemeChange"
         />
       </div>
     </div>
@@ -19,9 +19,22 @@
 </template>
 
 <script>
+import { settings, store } from "@/store";
+
 export default {
-  props: ["initialTheme"],
-  emits: ["changedTheme"],
+  data: () => {
+    return {
+      settings,
+      store,
+    };
+  },
+  methods: {
+    handleThemeChange(value) {
+      this.settings.theme = value.option;
+      localStorage.theme = this.settings.theme;
+      window.applyNewTheme(this.settings.theme);
+    },
+  },
 };
 </script>
 

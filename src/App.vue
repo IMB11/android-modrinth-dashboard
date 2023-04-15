@@ -16,19 +16,15 @@
       <Card class="responsive">
         <DropdownSelect
           name="dropdown-currentpage"
-          :default-value="currentPage"
-          @change="(newPage) => (currentPage = newPage.option)"
+          :default-value="settings.currentPage"
+          @change="(newPage) => (settings.currentPage = newPage.option)"
           :options="['Payouts', 'Projects', 'Notifications', 'Settings']"
         />
       </Card>
-      <PayoutStatistics v-if="currentPage === 'Payouts'" />
-      <ProjectStatistics v-if="currentPage === 'Projects'" />
-      <SettingsPage
-        v-if="currentPage === 'Settings'"
-        :initial-theme="theme"
-        @changed-theme="handleTheme"
-      />
-      <NotificationsPage v-if="currentPage === 'Notifications'" />
+      <PayoutStatistics v-if="settings.currentPage === 'Payouts'" />
+      <ProjectStatistics v-if="settings.currentPage === 'Projects'" />
+      <SettingsPage v-if="settings.currentPage === 'Settings'" />
+      <NotificationsPage v-if="settings.currentPage === 'Notifications'" />
     </div>
   </div>
 </template>
@@ -39,17 +35,15 @@ import PayoutStatistics from "@/components/PayoutStatistics.vue";
 import ProjectStatistics from "./components/ProjectStatistics.vue";
 import SettingsPage from "./components/SettingsPage.vue";
 import NotificationsPage from "./components/NotificationsPage.vue";
-import { store } from "@/store";
+import { store, settings } from "@/store";
 
 export default {
   name: "App",
   data: () => {
     return {
       hasSavedToken: false,
-      token: "NaN",
       store,
-      currentPage: "Payouts",
-      theme: "Light",
+      settings,
     };
   },
   components: {
@@ -61,11 +55,11 @@ export default {
   },
   methods: {
     async handleToken(tkn) {
-      this.token = tkn;
+      this.settings.token = tkn;
       this.hasSavedToken = true;
-      localStorage.token = this.token;
+      localStorage.token = this.settings.token;
 
-      this.axios.defaults.headers.common.Authorization = this.token;
+      this.axios.defaults.headers.common.Authorization = this.settings.token;
 
       this.store.user = (
         await this.axios.get("https://api.modrinth.com/v2/user")
@@ -86,21 +80,16 @@ export default {
 
       this.store.notifications = (
         await this.axios.get(
-          `https://api.modrinth.com/v2/user/${this.user.id}/notifications`
+          `https://api.modrinth.com/v2/user/${this.store.user.id}/notifications`
         )
       ).data;
     },
-    handleTheme(newTheme) {
-      this.theme = newTheme;
-      localStorage.theme = this.theme;
-      window.applyNewTheme(this.theme);
-    },
     handleLogout() {
-      this.token = undefined;
+      this.settings.token = undefined;
       this.hasSavedToken = false;
-      localStorage.token = this.token;
+      localStorage.token = this.settings.token;
       this.store.user = {};
-      this.axios.defaults.headers.common.Authorization = this.token;
+      this.axios.defaults.headers.common.Authorization = this.settings.token;
     },
   },
   async beforeMount() {
@@ -112,11 +101,11 @@ export default {
     }
 
     if (localStorage.theme === undefined) {
-      localStorage.theme = this.theme;
+      localStorage.theme = this.settings.theme;
     }
 
-    this.theme = localStorage.theme;
-    window.applyNewTheme(this.theme);
+    this.settings.theme = localStorage.theme;
+    window.applyNewTheme(this.settings.theme);
   },
 };
 </script>
