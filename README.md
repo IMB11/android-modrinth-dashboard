@@ -6,6 +6,7 @@ An unofficial android app to track your modrinth statistics.
   <img width="200" src="https://i.imgur.com/wszkIOG.png" />
   <img width="200" src="https://i.imgur.com/j6nVB0J.png" />
   <img width="200" src="https://i.imgur.com/Jz62lSa.png" />
+  <br />
   <img width="200" src="https://i.imgur.com/fpBdTHV.png" />
   <img width="200" src="https://i.imgur.com/AKbzI8O.png" />
 </div>
