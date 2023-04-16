@@ -4,7 +4,8 @@ export const settings = reactive({
     theme: 'Light',
     currentPage: 'Payouts',
     token: undefined,
-    abreviate_downloads: true
+    abreviate_downloads: true,
+    last_refreshed: new Date()
 })
 
 export const store = reactive({
