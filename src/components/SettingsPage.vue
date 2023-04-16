@@ -1,61 +1,63 @@
 <template>
-  <Card>
-    <h3>Settings</h3>
-    <div class="settings-row">
-      <div class="responsive">
-        <label for="theme-dropdown">
-          <h4>Theme</h4>
-        </label>
-        <DropdownSelect
-          name="dropdown-theme"
-          id="theme-dropdown"
-          :options="['Dark', 'Light']"
-          :default-value="settings.theme"
-          @change="(val) => $emit('changedTheme', val.option)"
-        />
+  <div>
+    <Card>
+      <h2>Settings</h2>
+    </Card>
+    <UserInfoCard />
+    <Card>
+      <div class="settings-row">
+        <div class="responsive">
+          <label for="theme-dropdown">
+            <h4>Theme</h4>
+          </label>
+          <DropdownSelect
+            name="dropdown-theme"
+            id="theme-dropdown"
+            :options="['Dark', 'Light']"
+            :default-value="settings.theme"
+            @change="(val) => $emit('changedTheme', val.option)"
+          />
+        </div>
+        <div class="responsive">
+          <label for="abreviate-checkbox">
+            <h4>Abreviate Counts</h4>
+          </label>
+          <!-- Cant mutate props :( -->
+          <Toggle
+            name="dropdown-theme"
+            id="abreviate-checkbox"
+            :checked="settings.abreviate_downloads"
+            v-model="abreviate_downloads_passthrough"
+          />
+        </div>
       </div>
-      <div class="responsive">
-        <label for="abreviate-checkbox">
-          <h4>Abreviate Counts</h4>
-        </label>
-        <!-- Cant mutate props :( -->
-        <Toggle
-          name="dropdown-theme"
-          id="abreviate-checkbox"
-          
-          :checked="settings.abreviate_downloads"
-          v-model="abreviate_downloads_passthrough"
-        />
-      </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script>
 import { store } from "@/store";
+import UserInfoCard from "./UserInfoCard.vue";
 
 export default {
-  data: () => {
-    return {
-      store,
-      abreviate_downloads_passthrough: false,
-    };
-  },
-  watch: {
-    // eslint-disable-next-line no-unused-vars
-    abreviate_downloads_passthrough(newVal, oldVal) {
-      console.log(this.abreviate_downloads_passthrough)
-      this.$emit(
-        "changedAbreviateDownloads",
-        this.abreviate_downloads_passthrough
-      );
+    data: () => {
+        return {
+            store,
+            abreviate_downloads_passthrough: false,
+        };
     },
-  },
-  props: ["settings"],
-  emits: ["changedTheme", "changedAbreviateDownloads"],
-  mounted() {
-    this.abreviate_downloads_passthrough = this.settings.abreviate_downloads
-  }
+    watch: {
+        // eslint-disable-next-line no-unused-vars
+        abreviate_downloads_passthrough(newVal, oldVal) {
+            this.$emit("changedAbreviateDownloads", this.abreviate_downloads_passthrough);
+        },
+    },
+    props: ["settings"],
+    emits: ["changedTheme", "changedAbreviateDownloads"],
+    mounted() {
+        this.abreviate_downloads_passthrough = this.settings.abreviate_downloads;
+    },
+    components: { UserInfoCard }
 };
 </script>
 

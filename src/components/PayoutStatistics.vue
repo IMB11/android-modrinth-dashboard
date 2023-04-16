@@ -1,7 +1,10 @@
 <template>
   <div>
     <Card>
-      <h3>Payout Statistics</h3>
+      <h2>Monetization</h2>
+    </Card>
+    <Card>
+      <h3>Monetization Statistics</h3>
       <div class="grid-display">
         <div class="grid-display__item">
           <div class="label">Total Revenue</div>
@@ -25,8 +28,13 @@
           v-for="payout in store.payoutInfo.payouts"
           v-bind:key="payout.created"
         >
-          <Badge :color="payout.status === 'success' ? 'green' : 'red'" :type="capitalize(payout.status)" />
-          <div class="label">Withdrawal - {{ getFormattedDate(payout.created) }}</div>
+          <Badge
+            :color="payout.status === 'success' ? 'green' : 'red'"
+            :type="capitalize(payout.status)"
+          />
+          <div class="label">
+            Withdrawal - {{ getFormattedDate(payout.created) }}
+          </div>
           <div class="value">${{ Math.round(payout.amount * 100) / 100 }}</div>
         </div>
       </div>
@@ -36,20 +44,20 @@
 
 <script>
 import { store } from "@/store";
-import moment from "moment"
+import moment from "moment";
 import { capitalize } from "vue";
 
 export default {
   data: () => {
     return {
       store,
-      capitalize
+      capitalize,
     };
   },
   methods: {
     getFormattedDate(date) {
-      return moment(date).format('MM/DD/YYYY');
-    }
-  }
+      return moment(date).format("MM/DD/YYYY");
+    },
+  },
 };
 </script>

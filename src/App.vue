@@ -1,18 +1,10 @@
 <template>
   <div>
-    <Card v-if="settings.token === undefined">
+    <NavigationBar @change="(newPage) => (settings.currentPage = newPage)" :settings="settings" />
+    <Card class="view" v-if="settings.token === undefined">
       <SaveTokenModal @confirmed="(tkn) => handleToken(tkn)" />
     </Card>
-    <div v-else>
-      <UserInfoCard />
-      <Card class="responsive">
-        <DropdownSelect
-          name="dropdown-currentpage"
-          :default-value="settings.currentPage"
-          @change="(newPage) => (settings.currentPage = newPage.option)"
-          :options="['Payouts', 'Projects', 'Notifications', 'Settings']"
-        />
-      </Card>
+    <div class="view" v-else>
       <PayoutStatistics v-if="settings.currentPage === 'Payouts'" />
       <ProjectStatistics :settings="settings" v-if="settings.currentPage === 'Projects'" />
       <SettingsPage
@@ -33,7 +25,7 @@ import ProjectStatistics from "./components/ProjectStatistics.vue";
 import SettingsPage from "./components/SettingsPage.vue";
 import NotificationsPage from "./components/NotificationsPage.vue";
 import { store, settings, populateStoreData } from "@/store";
-import UserInfoCard from "./components/UserInfoCard.vue";
+import NavigationBar from "./components/NavigationBar.vue";
 
 export default {
   name: "App",
@@ -49,8 +41,8 @@ export default {
     ProjectStatistics,
     SettingsPage,
     NotificationsPage,
-    UserInfoCard,
-  },
+    NavigationBar
+},
   methods: {
     async handleToken(tkn) {
       this.settings.token = tkn;
