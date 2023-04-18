@@ -1,7 +1,7 @@
 @import url('https://rsms.me/inter/inter.css');
 
 .view {
-  padding: 5%;
+  padding: env(safe-area-inset-top) 5% env(safe-area-inset-bottom);
 }
 
 .animated-dropdown {
