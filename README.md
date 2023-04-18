@@ -31,9 +31,9 @@ Currently, I plan to have feature parity with the Analytics page on the modrinth
   + [ ] Create new transaction
 - Project section
   Some items in this section wont be available until they're added to knossos.
-  + [ ] Total downloads
+  + [x] Total downloads
   + [ ] This months downloads
-  + [ ] Total follows
+  + [x] Total follows
   + [ ] This months follows
 - [x] Notification section
 - Settings Section
