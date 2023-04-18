@@ -56,11 +56,8 @@ If you wish to push a debug apk to your android device, you will need to run the
 pnpm install
 pnpm run build
 npx cap sync
-npx cap run android
+npx cap run android/ios
 ```
 
 If you want to build an apk, you will need to open the `android` folder in Android Studio v2022+
-
-## IOS Support
-
-I cannot provide IOS support myself because I do not have any apple devices. However, you can add it yourself. Check the CapacitorJS documentation for information on adding IOS as a build target.
+If you want to build for IOS, you will need to open the `ios` folder in XCode
