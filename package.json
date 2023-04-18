@@ -9,6 +9,7 @@
     "resources": "capacitor-resources -p android,ios",
     "run-android": "vue-cli-service build && cap copy && cap run android",
     "run-ios": "vue-cli-service build && cap copy && cap run ios"
+    "package": "npm run build && npx cap sync && echo 'Open Android Studio and Generate Signed Jar to continue.'"
   },
   "dependencies": {
     "@capacitor/android": "^4.7.3",
