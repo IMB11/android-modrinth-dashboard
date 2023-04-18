@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "run-android": "vue-cli-service build && cap copy && cap run android"
+    "run-android": "vue-cli-service build && cap copy && cap run android",
+    "package": "npm run build && npx cap sync && echo 'Open Android Studio and Generate Signed Jar to continue.'"
   },
   "dependencies": {
     "@capacitor/android": "^4.7.3",
