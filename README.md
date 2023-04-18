@@ -1,6 +1,6 @@
 # Modrinth Publisher Dashboard
 
-An unofficial android app to track your modrinth statistics.
+An unofficial app to track your modrinth statistics.
 
 <div align="center">
   <img width="200" src="https://i.imgur.com/wszkIOG.png" />
