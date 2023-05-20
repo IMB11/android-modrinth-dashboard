@@ -8,7 +8,7 @@
     </div>
     <div>
       <div class="profile_button_group">
-        <Button @click="handleLogout()"> <LogoutIcon />Logout </Button>
+        <Button @click="handleLogout()"> <LogOutIcon />Logout </Button>
         <Button :disabled="disableRefresh" @click="handleRefresh()">
           <UpdatedIcon />Refresh
         </Button>
@@ -18,16 +18,9 @@
 </template>
 
 <script>
-import LogoutIcon from "@/assets/icons/LogOutIcon.vue";
-import UpdatedIcon from "@/assets/icons/UpdatedIcon.vue";
-
 import { store, settings, populateStoreData } from "@/store";
 
 export default {
-  components: {
-    LogoutIcon,
-    UpdatedIcon,
-  },
   data: () => {
     return {
       store,
@@ -49,7 +42,7 @@ export default {
 
       this.disableRefresh = true;
 
-      populateStoreData(this.axios, this.store)
+      populateStoreData(this.axios, this.store);
 
       setTimeout(() => {
         this.disableRefresh = false;

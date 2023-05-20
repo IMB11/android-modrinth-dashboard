@@ -1,7 +1,7 @@
-@import url('https://rsms.me/inter/inter.css');
+@import url("https://rsms.me/inter/inter.css");
 
 .view {
-  padding: env(safe-area-inset-top) 5% env(safe-area-inset-bottom);
+  margin: var(--gap-sm);
 }
 
 .animated-dropdown {
@@ -59,7 +59,7 @@
 .grid-display .grid-display__item .smaller-value {
   font-size: 0.85rem;
   font-style: italic;
-  color: var(--color-base)
+  color: var(--color-base);
 }
 
 .grid-display.width-12 {

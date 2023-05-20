@@ -4,22 +4,34 @@
       <h2>Notifications</h2>
       <p>Only status change notifications will be shown here.</p>
     </Card>
-    <Card>
-      <i v-if="store.notifications.length < 1"
-        >You don't have any notifications.</i
-      >
-      <div class="grid-display">
-        <div
-          class="grid-display__item"
-          v-for="notification in notifications"
-          v-bind:key="notification.id + notification.user_id"
+    <Card v-if="store.notifications.length < 1">
+      <i>You don't have any notifications.</i>
+    </Card>
+    <Card
+      class="notification"
+      v-for="notification in notifications"
+      :key="notification.title"
+    >
+      <h4 v-html="render(notification.title)" />
+      <p v-html="render(notification.text)" />
+      <p class="recieved-date">
+        <CalendarIcon /> Recieved
+        {{
+          new Intl.DateTimeFormat("en", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+          }).format(new Date(notification.created))
+        }}
+      </p>
+      <div class="dismiss-btn">
+        <Button @click="dismissNotification(notification.id)"
+          ><XIcon />Dismiss</Button
         >
-          <div
-            style="width: 100%"
-            class="markdown-body"
-            v-html="getNotificationContent(notification)"
-          ></div>
-        </div>
       </div>
     </Card>
   </div>
@@ -44,6 +56,19 @@ export default {
     },
   },
   methods: {
+    async dismissNotification(id) {
+      await this.axios.delete(
+        `https://api.modrinth.com/v2/user/${this.store.user.id}/notifications/${id}`
+      );
+      this.store.notifications = (
+        await this.axios.get(
+          `https://api.modrinth.com/v2/user/${store.user.id}/notifications`
+        )
+      ).data;
+    },
+    render(str) {
+      return renderHighlightedString(str);
+    },
     getNotificationContent(notification) {
       return renderHighlightedString(
         "### " + notification.title + "\n\n" + notification.text
@@ -56,5 +81,15 @@ export default {
 <style scoped>
 .notification-value {
   font-size: 1.5rem;
+}
+
+.dismiss-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.recieved-date {
+  font-weight: 500;
+  font-size: var(--font-size-sm);
 }
 </style>

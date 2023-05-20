@@ -6,9 +6,12 @@
     <Button @click="$emit('change', 'Projects')" iconOnly
       ><ListIcon :style="getStyle('Projects')" />
     </Button>
-    <Button @click="$emit('change', 'Notifications')" iconOnly
-      ><BellIcon :style="getStyle('Notifications')"
-    /></Button>
+    <Button
+      @click="$emit('change', 'Notifications')"
+      :class="store.notifications.length > 0 ? 'bubble' : ''"
+      iconOnly
+      ><BellIcon :style="getStyle('Notifications')" />
+    </Button>
     <Button @click="$emit('change', 'Settings')" iconOnly
       ><SettingsIcon :style="getStyle('Settings')"
     /></Button>
@@ -16,15 +19,9 @@
 </template>
 
 <script>
-import BellIcon from "@/assets/icons/BellIcon.vue";
-import CurrencyIcon from "@/assets/icons/CurrencyIcon.vue";
-import SettingsIcon from "@/assets/icons/SettingsIcon.vue";
-import ListIcon from "@/assets/icons/ListIcon.vue";
-
 export default {
-  components: { CurrencyIcon, BellIcon, SettingsIcon, ListIcon },
   emits: ["change"],
-  props: ["settings"],
+  props: ["settings", "store"],
   methods: {
     getStyle(page) {
       return this.settings.currentPage === page
@@ -55,5 +52,16 @@ export default {
 .navigation > * {
   background-color: transparent;
   box-shadow: none;
+}
+
+.bubble::after {
+  background-color: var(--color-brand);
+  border-radius: var(--radius-xl);
+  content: "";
+  height: 0.6rem;
+  position: relative;
+  right: 0.25rem;
+  top: -0.75rem;
+  width: 0.6rem;
 }
 </style>

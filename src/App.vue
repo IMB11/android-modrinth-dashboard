@@ -1,17 +1,27 @@
 <template>
   <div>
-    <NavigationBar @change="(newPage) => (settings.currentPage = newPage)" :settings="settings" />
+    <NavigationBar
+      v-if="settings.token !== undefined"
+      @change="(newPage) => (settings.currentPage = newPage)"
+      :settings="settings"
+      :store="store"
+    />
     <Card class="view" v-if="settings.token === undefined">
       <SaveTokenModal @confirmed="(tkn) => handleToken(tkn)" />
     </Card>
     <div class="view" v-else>
       <PayoutStatistics v-if="settings.currentPage === 'Payouts'" />
-      <ProjectStatistics :settings="settings" v-if="settings.currentPage === 'Projects'" />
+      <ProjectStatistics
+        :settings="settings"
+        v-if="settings.currentPage === 'Projects'"
+      />
       <SettingsPage
         v-if="settings.currentPage === 'Settings'"
         :settings="settings"
         @changed-theme="(theme) => (settings.theme = theme)"
-        @changed-abreviate-downloads="(val) => (settings.abreviate_downloads = val)"
+        @changed-abreviate-downloads="
+          (val) => (settings.abreviate_downloads = val)
+        "
       />
       <NotificationsPage v-if="settings.currentPage === 'Notifications'" />
     </div>
@@ -41,8 +51,8 @@ export default {
     ProjectStatistics,
     SettingsPage,
     NotificationsPage,
-    NavigationBar
-},
+    NavigationBar,
+  },
   methods: {
     async handleToken(tkn) {
       this.settings.token = tkn;
