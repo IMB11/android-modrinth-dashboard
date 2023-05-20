@@ -6,8 +6,8 @@
     <Card>
       <h3>Project Statistics</h3>
       <p>
-        Statistics are limited until extended statistic endpoints are published to
-        the Modrinth API.
+        Statistics are limited until extended statistic endpoints are published
+        to the Modrinth API.
       </p>
       <div class="grid-display">
         <div class="grid-display__item">
@@ -32,6 +32,33 @@
         </div>
       </div>
     </Card>
+    <Card class="projects">
+      <h3>Projects</h3>
+      <Card
+        class="project-card"
+        v-for="project in store.projects"
+        :key="project.id"
+      >
+        <div class="project-info">
+          <img :src="project.icon_url" class="project-icon" />
+          <h4>{{ project.title }}</h4>
+          <Button
+            iconOnly
+            class="project-button"
+            @click="
+              openInBrowser(
+                `https://modrinth.com/${project.project_type}/${project.id}`
+              )
+            "
+            ><ExternalIcon
+          /></Button>
+        </div>
+        <div class="project-statistics">
+          <p><DownloadIcon />{{ formatCount(project.downloads) }}</p>
+          <p><HeartIcon />{{ formatCount(project.followers) }}</p>
+        </div>
+      </Card>
+    </Card>
   </div>
 </template>
 
@@ -46,6 +73,9 @@ export default {
   },
   props: ["settings"],
   methods: {
+    openInBrowser(url) {
+      window.open(url, "_blank", "noreferrer");
+    },
     formatCount(amount) {
       return this.settings.abreviate_downloads
         ? Intl.NumberFormat("en-US", {
@@ -57,3 +87,41 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.projects {
+  margin-bottom: 24%;
+}
+.project-card {
+  padding: var(--gap-xs);
+  padding-left: inherit;
+  padding-right: inherit;
+  background-color: var(--color-bg);
+}
+
+.project-statistics > p {
+  margin-top: 0;
+}
+
+.project-info,
+.project-statistics {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  flex-direction: row;
+}
+
+.project-button {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.project-card > .group {
+  margin-left: 12px;
+}
+.project-icon {
+  width: 32px;
+  height: 32px;
+  vertical-align: middle;
+}
+</style>

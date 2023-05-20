@@ -40,24 +40,27 @@ import { store } from "@/store";
 import UserInfoCard from "./UserInfoCard.vue";
 
 export default {
-    data: () => {
-        return {
-            store,
-            abreviate_downloads_passthrough: false,
-        };
+  data: () => {
+    return {
+      store,
+      abreviate_downloads_passthrough: false,
+    };
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    abreviate_downloads_passthrough(newVal, oldVal) {
+      this.$emit(
+        "changedAbreviateDownloads",
+        this.abreviate_downloads_passthrough
+      );
     },
-    watch: {
-        // eslint-disable-next-line no-unused-vars
-        abreviate_downloads_passthrough(newVal, oldVal) {
-            this.$emit("changedAbreviateDownloads", this.abreviate_downloads_passthrough);
-        },
-    },
-    props: ["settings"],
-    emits: ["changedTheme", "changedAbreviateDownloads"],
-    mounted() {
-        this.abreviate_downloads_passthrough = this.settings.abreviate_downloads;
-    },
-    components: { UserInfoCard }
+  },
+  props: ["settings"],
+  emits: ["changedTheme", "changedAbreviateDownloads"],
+  mounted() {
+    this.abreviate_downloads_passthrough = this.settings.abreviate_downloads;
+  },
+  components: { UserInfoCard },
 };
 </script>
 
@@ -66,9 +69,6 @@ label {
   flex-grow: 0;
   margin-top: auto;
   margin-bottom: auto;
-}
-
-.responsive:nth-child(1) {
 }
 
 .responsive {
