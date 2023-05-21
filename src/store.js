@@ -28,8 +28,6 @@ export const populateStoreData = async (axios, store) => {
     )
   ).data;
 
-  store.latest_app_version.tag_name = "0.5.0";
-
   store.user = (await axios.get("https://api.modrinth.com/v2/user")).data;
 
   store.payoutInfo = (

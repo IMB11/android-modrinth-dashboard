@@ -1,12 +1,12 @@
 {
   "name": "modrinthpubdash",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "run-android": "vue-cli-service build && cap copy && cap run android",
+    "run-android": "vue-cli-service build && cap copy && cap run android -- --sdk-info",
     "run-ios": "vue-cli-service build && cap copy && cap run ios",
     "resources-android": "capacitor-resources -p android",
     "resources-ios": "capacitor-resources -p ios",
