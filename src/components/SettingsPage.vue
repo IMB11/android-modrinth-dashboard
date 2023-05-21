@@ -13,7 +13,7 @@
           <DropdownSelect
             name="dropdown-theme"
             id="theme-dropdown"
-            :options="['Dark', 'Light', 'OLED']"
+            :options="['System', 'Dark', 'Light', 'OLED']"
             :default-value="settings.theme"
             @change="(val) => $emit('changedTheme', val.option)"
           />

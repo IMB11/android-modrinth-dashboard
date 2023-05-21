@@ -85,6 +85,10 @@
   --shadow-card: rgba(0, 0, 0, 0.25) 0px 2px 4px 0px !important;
 }`
 
+      if (theme === "System") {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Dark' : 'Light'
+      }
+
       if (theme === "Dark") {
         document.getElementById("theme").innerHTML = darkThemeContents;
       } else if (theme === "OLED") {

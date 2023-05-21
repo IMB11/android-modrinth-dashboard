@@ -57,9 +57,7 @@ export default {
   },
   methods: {
     async dismissNotification(id) {
-      await this.axios.delete(
-        `https://api.modrinth.com/v2/user/${this.store.user.id}/notifications/${id}`
-      );
+      await this.axios.delete(`https://api.modrinth.com/v2/notification/${id}`);
       this.store.notifications = (
         await this.axios.get(
           `https://api.modrinth.com/v2/user/${store.user.id}/notifications`
