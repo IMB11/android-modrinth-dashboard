@@ -32,7 +32,7 @@
         </div>
       </div>
     </Card>
-    <Card class="page-extender">
+    <Card class="Okay, so: - Added a littlepage-extender">
       <h3>Projects</h3>
       <Card
         class="project-card"
