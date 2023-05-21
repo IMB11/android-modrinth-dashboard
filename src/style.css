@@ -4,6 +4,10 @@
   margin: var(--gap-sm);
 }
 
+.page-extender {
+  margin-bottom: 25%;
+}
+
 .animated-dropdown {
   flex-grow: 1;
 }

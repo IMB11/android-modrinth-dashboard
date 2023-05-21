@@ -32,7 +32,7 @@
         </div>
       </div>
     </Card>
-    <Card class="projects">
+    <Card class="page-extender">
       <h3>Projects</h3>
       <Card
         class="project-card"
@@ -89,9 +89,6 @@ export default {
 </script>
 
 <style scoped>
-.projects {
-  margin-bottom: 24%;
-}
 .project-card {
   padding: var(--gap-xs);
   padding-left: inherit;
