@@ -13,24 +13,24 @@
     "package": "npm run build && npx cap sync && echo 'Open Android Studio and Generate Signed Jar to continue.'"
   },
   "dependencies": {
-    "@capacitor/android": "^4.7.3",
-    "@capacitor/cli": "^4.7.3",
-    "@capacitor/core": "^4.7.3",
-    "axios": "^1.3.5",
-    "core-js": "^3.8.3",
+    "@capacitor/android": "^4.8.0",
+    "@capacitor/cli": "^4.8.0",
+    "@capacitor/core": "^4.8.0",
+    "axios": "^1.4.0",
+    "core-js": "^3.30.2",
     "moment": "^2.29.4",
-    "omorphia": "^0.4.5",
-    "vue": "^3.2.13",
+    "omorphia": "^0.4.22",
+    "vue": "^3.3.4",
     "vue-axios": "^3.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@babel/core": "^7.22.1",
+    "@babel/eslint-parser": "^7.21.8",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
+    "eslint-plugin-vue": "^8.7.1"
   },
   "eslintConfig": {
     "root": true,
