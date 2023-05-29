@@ -9,7 +9,7 @@
     </Card>
     <Card
       class="notification"
-      v-for="notification in notifications"
+      v-for="notification in store.notifications"
       :key="notification.title"
     >
       <h4 v-html="render(notification.title)" />
@@ -46,11 +46,6 @@ export default {
     return {
       store,
     };
-  },
-  computed: {
-    notifications() {
-      return store.notifications;
-    },
   },
   methods: {
     async dismissNotification(id) {
