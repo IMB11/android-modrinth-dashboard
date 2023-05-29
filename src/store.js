@@ -43,7 +43,9 @@ export const populateStoreData = async (axios, store) => {
     await axios.get(
       `https://api.modrinth.com/v2/user/${store.user.id}/notifications`
     )
-  ).data;
+  ).data.filter(
+    (notif) => notif.type === "status_update"
+  );
 
   store.projects = (
     await axios.get(
