@@ -49,10 +49,7 @@ export default {
   },
   computed: {
     notifications() {
-      return store.notifications.filter(
-        (notif) => notif.type === "status_update"
-      );
-      // return store.notifications;
+      return store.notifications;
     },
   },
   methods: {
