@@ -20,7 +20,7 @@
         </div>
       </div>
     </Card>
-    <Card :collapsible="true">
+    <Card v-if="store.payoutInfo.payouts.length > 0" :collapsible="true">
       <template #header><h3>Transaction History</h3></template>
       <div class="grid-display flow">
         <div
