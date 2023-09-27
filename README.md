@@ -1,5 +1,5 @@
 > [!IMPORTANT]  
-> [Checkout the latest discussion post on a project update.](https://github.com/mineblock11/android-modrinth-dashboard/discussions/19)
+> ### [Checkout the latest discussion post on a project update.](https://github.com/mineblock11/android-modrinth-dashboard/discussions/19)
 
 
 # Modrinth Publisher Dashboard
