@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> [Checkout the latest discussion post on a project update.](https://github.com/mineblock11/android-modrinth-dashboard/discussions/19)
+
+
 # Modrinth Publisher Dashboard
 
 An unofficial android (and IOS if you want) app to track your modrinth statistics.
