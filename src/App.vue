@@ -1,29 +1,19 @@
 <template>
-  <NavPanel :show="showDrawer" @hide="showDrawer = false" />
-  <div v-if="router.currentRoute.value.name !== 'Login'" class="navbar">
-    <Button iconOnly @click="showDrawer = true"><HamburgerIcon /></Button>
-    <div class="navbar-item">
-      <h1>{{ router.currentRoute.value.name }}</h1>
-    </div>
-  </div>
   <div class="padded">
     <RouterView />
   </div>
+  <NavHelper v-if="!isLoginPage" />
 </template>
 
 <script setup lang="ts">
 import { useDataStore } from "@/store";
-import { onBeforeMount, ref } from "vue";
-import { onBeforeRouteUpdate, useRouter } from "vue-router";
-import { Button, HamburgerIcon } from "omorphia";
-
-import UserComponent from "./components/UserComponent.vue";
-import NavPanel from "./components/NavPanel.vue";
+import { computed, onBeforeMount, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import NavHelper from "./components/NavHelper.vue";
 
 const store = useDataStore();
 const router = useRouter();
-
-const showDrawer = ref(false);
+const route = useRoute();
 
 onBeforeMount(() => {
   document.documentElement.className = `${store.theme}-mode`;
@@ -33,7 +23,17 @@ onBeforeMount(() => {
     return;
   }
 
-  store.refreshUser();
+  try {
+    store.refreshUser();
+  } catch (e) {
+    router.push("/login");
+    return;
+  }
+});
+
+const isLoginPage = computed(() => {
+  console.log(route.name === "Login");
+  return route.name === "Login";
 });
 </script>
 
@@ -65,5 +65,6 @@ onBeforeMount(() => {
 
 .padded {
   padding: 5%;
+  margin-bottom: 15%;
 }
 </style>

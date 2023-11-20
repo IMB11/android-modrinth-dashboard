@@ -4,27 +4,55 @@
     <Card>
       <h3 class="section-title"><PaintBrushIcon />Appearance</h3>
       <p>Customize the appearance of the app.</p>
-      <Button @click="toggleTheme"
-        ><SunIcon v-if="isDark" /><MoonIcon v-else /> Switch Theme</Button
-      >
-      <div class="responsive">
-        <label for="abreviate-checkbox">
-          <h4>Abreviate Counts</h4>
-        </label>
-        <Toggle
-          name="dropdown-theme"
-          id="abreviate-checkbox"
-          v-model="shouldFormatNumbers"
-        />
+      <div class="settings-list">
+        <div class="responsive">
+          <h4>Theme</h4>
+          <Button @click="toggleTheme"
+            ><SunIcon v-if="isDark" /><MoonIcon v-else /> Switch Theme</Button
+          >
+        </div>
+        <div class="responsive">
+          <label for="abreviate-checkbox">
+            <h4>Abreviate Counts</h4>
+          </label>
+          <input
+            id="abreviate-checkbox"
+            type="checkbox"
+            class="switch stylized-toggle"
+            :checked="store.formatNumbers"
+            @change="store.setFormatNumbers(!store.formatNumbers)"
+          />
+        </div>
+        <div class="responsive" v-if="currencies">
+          <h4>Currency</h4>
+          <DropdownSelect
+            name="currency"
+            :options="currencies"
+            v-model="selectedCurrency"
+            class="select stylized-select"
+          />
+        </div>
       </div>
     </Card>
+    <UserComponent />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Button, PaintBrushIcon, Card, SunIcon, MoonIcon } from "omorphia";
+import {
+  Button,
+  PaintBrushIcon,
+  Card,
+  SunIcon,
+  MoonIcon,
+  Toggle,
+  DropdownSelect,
+} from "omorphia";
 import { useDataStore } from "@/store";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import UserComponent from "@/components/UserComponent.vue";
+import { asyncComputed } from "@vueuse/core";
+import { getCurrencies } from "@/currency";
 
 const store = useDataStore();
 
@@ -32,12 +60,16 @@ const isDark = computed(() => {
   return store.theme === "dark";
 });
 
-const shouldFormatNumbers = computed({
-  get(): boolean {
-    return store.formatNumbers;
-  },
-  set(val: boolean) {
-    store.setFormatNumbers(val);
+const currencies = asyncComputed(async () => {
+  return await getCurrencies();
+});
+
+const selectedCurrency = computed({
+  get: () => currencies.value[store.currency],
+  set: (s) => {
+    store.setCurrency(currencies.value.indexOf(s));
+    // Reload
+    window.location.reload();
   },
 });
 
@@ -62,5 +94,18 @@ label {
 .responsive {
   gap: 10%;
   justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+
+  * {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
 }
 </style>

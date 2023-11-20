@@ -1,5 +1,5 @@
 <template>
-  <h2>Analytics</h2>
+  <h1>Summary</h1>
   <Card>
     <div class="grid-display">
       <div class="grid-display__item">
@@ -28,6 +28,54 @@
           }}</span
         >
       </div>
+      <div class="grid-display__item">
+        <div class="label">Last Month Revenue</div>
+        <div class="value">
+          {{
+            statistics
+              ? toLocalCurrency(
+                  Math.round(
+                    statistics.last_month_earnings *
+                      statistics.currencyRate *
+                      100
+                  ) / 100
+                )
+              : "Loading..."
+          }}
+        </div>
+        <span
+          class="smaller-value"
+          v-if="statistics && statistics?.targetCurrency !== 'USD'"
+        >
+          Converted from USD${{
+            Math.round(statistics.last_month_earnings * 100) / 100
+          }}
+          (estimated)
+        </span>
+      </div>
+      <div class="grid-display__item">
+        <div class="label">All Time Revenue</div>
+        <div class="value">
+          {{
+            statistics // round to 2 decimal places
+              ? toLocalCurrency(
+                  Math.round(
+                    statistics.all_time_earnings * statistics.currencyRate * 100
+                  ) / 100
+                )
+              : "Loading..."
+          }}
+        </div>
+        <span
+          class="smaller-value"
+          v-if="statistics && statistics?.targetCurrency !== 'USD'"
+        >
+          Converted from USD${{
+            Math.round(statistics.all_time_earnings * 100) / 100
+          }}
+          (estimated)
+        </span>
+      </div>
     </div>
   </Card>
 </template>
@@ -38,10 +86,19 @@ import { useDataStore } from "@/store";
 import { computedAsync } from "@vueuse/core";
 import { computed } from "vue";
 import { Card } from "omorphia";
+import { convertUSD, getCurrencies } from "@/currency";
 
 const store = useDataStore();
 
 const statistics = computedAsync(async () => {
+  if (store.cachedData.statistics) {
+    const now = Date.now();
+
+    if (store.cachedData.statistics.lastUpdated - now < 1000 * 60 * 5) {
+      return store.cachedData.statistics;
+    }
+  }
+
   const { data } = await axios.get(`/user/${store.user.id}/projects`);
 
   const total_followers = (data as unknown as any[]).reduce((acc, project) => {
@@ -54,16 +111,53 @@ const statistics = computedAsync(async () => {
 
   const number_of_projects = (data as unknown as any[]).length;
 
-  return {
+  const { data: financial_data } = await axios.get(
+    `/user/${store.user.id}/payouts`
+  );
+
+  // Convert financial data to currencies.
+
+  const currencies = await getCurrencies();
+  const target = currencies[store.currency];
+  const rate = await convertUSD(target);
+
+  const statistics = {
+    lastUpdated: new Date(),
+    currencyRate: rate,
+    targetCurrency: target,
+    last_month_earnings: financial_data.last_month,
+    all_time_earnings: financial_data.all_time,
     total_followers,
     total_downloads,
     number_of_projects,
   };
+
+  store.cachedData.statistics = statistics;
+
+  return statistics;
 });
 
-console.log(statistics);
+const currencies = computedAsync(async () => {
+  return await getCurrencies();
+});
+
+function toLocalCurrency(amount: number) {
+  if (!currencies || store.currency == 0) {
+    return Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+  }
+
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currencies.value[store.currency],
+  }).format(amount);
+}
 
 function formatCount(amount: number) {
+  if (!store.formatNumbers) return Intl.NumberFormat("en-US").format(amount);
+
   return Intl.NumberFormat("en-US", {
     notation: "compact",
     maximumFractionDigits: 1,

@@ -53,6 +53,7 @@ import axiosInstance from "@/axios";
 import { computed, ref } from "vue";
 import { useDataStore } from "@/store";
 import { useRouter } from "vue-router";
+import axios from "@/axios";
 
 const store = useDataStore();
 const router = useRouter();
@@ -85,6 +86,8 @@ async function peformValidation() {
 
     console.log("Successfully verified access token.");
     store.setToken(accessToken.value);
+    axios.defaults.headers.common["Authorization"] = accessToken.value;
+
     router.push("/");
   } catch (e) {
     console.log("Failed to verify access token.");

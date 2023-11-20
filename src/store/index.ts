@@ -9,8 +9,10 @@ export const useDataStore = defineStore('data', {
     theme: 'light',
     token: undefined,
     user: undefined,
-    formatNumbers: true
-  } as unknown as { theme: "light" | "dark", token: string | undefined, user: any | undefined, formatNumbers: boolean }),
+    formatNumbers: true,
+    currency: 0,
+    cachedData: {}
+  } as unknown as { theme: "light" | "dark", token: string | undefined, user: any | undefined, formatNumbers: boolean, cachedData: any, currency: number }),
   actions: {
     setTheme(theme: "light" | "dark") {
       this.theme = theme;
@@ -25,16 +27,22 @@ export const useDataStore = defineStore('data', {
       this.formatNumbers = value;
       this.$persist();
     },
+    setCurrency(value: number) {
+      this.currency = value;
+      this.$persist();
+    },
     async refreshUser() {
       if (!this.token) return;
 
       axios.defaults.headers.common['Authorization'] = `${this.token}`;
 
-      const { data } = (await axios.get("/user"));
-
-      this.user = data;
-
-      console.log(data);
+      try {
+        const { data } = (await axios.get("/user"));
+        this.user = data;
+        console.log(data);
+      } catch (e) {
+        throw e;
+      }
     }
   },
 })
