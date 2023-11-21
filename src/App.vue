@@ -9,14 +9,19 @@
 import { useDataStore } from "@/store";
 import { computed, onBeforeMount, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import NavHelper from "./components/NavHelper.vue";
+import NavHelper from "@/components/NavHelper.vue";
+import axios from "@/axios";
+import { convertUSD, getCurrencies, getCurrencyRates } from "@/currency";
+import { getStatisticalData } from "./api";
 
 const store = useDataStore();
 const router = useRouter();
 const route = useRoute();
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   document.documentElement.className = `${store.theme}-mode`;
+
+  store.cachedData.currencies = await getCurrencyRates();
 
   if (!store.token) {
     router.push("/login");
@@ -29,10 +34,23 @@ onBeforeMount(() => {
     router.push("/login");
     return;
   }
+
+  // Fetch statistics.
+  if (store.cachedData.statistics) {
+    const now = Date.now();
+    if (
+      Date.parse(store.cachedData.statistics.lastUpdated as string) - now <
+      1000 * 60 * 5
+    ) {
+      return;
+    }
+  }
+
+  const statistics = await getStatisticalData(store);
+  store.cachedData.statistics = statistics;
 });
 
 const isLoginPage = computed(() => {
-  console.log(route.name === "Login");
   return route.name === "Login";
 });
 </script>

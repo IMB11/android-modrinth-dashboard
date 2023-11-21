@@ -1,5 +1,5 @@
+import { getStatisticalData, type StatisticData } from "@/api";
 import axios from "@/axios";
-import { useAxios } from "@vueuse/integrations";
 import { defineStore } from "pinia";
 
 // Store theme, authentication token if it exists.
@@ -12,7 +12,14 @@ export const useDataStore = defineStore('data', {
     formatNumbers: true,
     currency: 0,
     cachedData: {}
-  } as unknown as { theme: "light" | "dark", token: string | undefined, user: any | undefined, formatNumbers: boolean, cachedData: any, currency: number }),
+  } as unknown as {
+    theme: "light" | "dark", token: string | undefined, user: any | undefined, formatNumbers: boolean, cachedData: {
+      statistics: StatisticData,
+      currencies: {
+        [key: string]: number
+      }
+    }, currency: number
+  }),
   actions: {
     setTheme(theme: "light" | "dark") {
       this.theme = theme;
@@ -27,8 +34,11 @@ export const useDataStore = defineStore('data', {
       this.formatNumbers = value;
       this.$persist();
     },
-    setCurrency(value: number) {
+    async setCurrency(value: number) {
       this.currency = value;
+
+      this.cachedData.statistics = await getStatisticalData(this);
+
       this.$persist();
     },
     async refreshUser() {
@@ -39,10 +49,11 @@ export const useDataStore = defineStore('data', {
       try {
         const { data } = (await axios.get("/user"));
         this.user = data;
-        console.log(data);
       } catch (e) {
         throw e;
       }
     }
   },
 })
+
+export { StatisticData };

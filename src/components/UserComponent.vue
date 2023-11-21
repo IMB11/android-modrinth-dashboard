@@ -31,6 +31,7 @@ function handleRefresh() {}
 
 function handleLogout() {
   store.setToken(undefined);
+  store.cachedData = { statistics: undefined };
   window.location.reload();
 }
 </script>

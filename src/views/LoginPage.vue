@@ -54,6 +54,7 @@ import { computed, ref } from "vue";
 import { useDataStore } from "@/store";
 import { useRouter } from "vue-router";
 import axios from "@/axios";
+import { getStatisticalData } from "@/api";
 
 const store = useDataStore();
 const router = useRouter();
@@ -86,7 +87,14 @@ async function peformValidation() {
 
     console.log("Successfully verified access token.");
     store.setToken(accessToken.value);
+
+    store.user = data;
+
     axios.defaults.headers.common["Authorization"] = accessToken.value;
+
+    const statistics = await getStatisticalData(store);
+
+    store.cachedData.statistics = statistics;
 
     router.push("/");
   } catch (e) {

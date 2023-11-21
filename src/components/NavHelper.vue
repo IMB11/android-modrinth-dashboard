@@ -10,7 +10,9 @@
         :is="getIconForRoute(route)"
         :style="getStyleForRoute(route)"
       />
-      <p class="show-tablet">{{ route.name }}</p></Button
+      <p :style="getStyleForRoute(route)" class="show-tablet">
+        {{ route.name }}
+      </p></Button
     >
   </Card>
 </template>
@@ -50,7 +52,13 @@ function gotoRoute(route: any) {
 // (min-width: 768px)
 @media screen and (min-width: 768px) {
   .show-tablet {
-    display: initial;
+    display: initial !important;
+  }
+
+  .navigation {
+    padding: 2% !important;
+    padding-left: 15% !important;
+    padding-right: 15% !important;
   }
 }
 

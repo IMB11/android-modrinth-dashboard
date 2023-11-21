@@ -6,12 +6,14 @@
         <div class="label">Total Downloads</div>
         <div class="value">
           {{
-            statistics ? formatCount(statistics.total_downloads) : "Loading..."
+            statistics
+              ? formatCount(statistics.project_data.total_downloads)
+              : "Loading..."
           }}
         </div>
         <span class="smaller-value" v-if="statistics"
-          >from {{ statistics.number_of_projects }} project{{
-            statistics.number_of_projects === 1 ? "" : "s"
+          >from {{ statistics.project_data.number_of_projects }} project{{
+            statistics.project_data.number_of_projects === 1 ? "" : "s"
           }}</span
         >
       </div>
@@ -19,39 +21,16 @@
         <div class="label">Total Follows</div>
         <div class="value">
           {{
-            statistics ? formatCount(statistics.total_followers) : "Loading..."
-          }}
-        </div>
-        <span class="smaller-value" v-if="statistics"
-          >from {{ statistics.number_of_projects }} project{{
-            statistics.number_of_projects === 1 ? "" : "s"
-          }}</span
-        >
-      </div>
-      <div class="grid-display__item">
-        <div class="label">Last Month Revenue</div>
-        <div class="value">
-          {{
             statistics
-              ? toLocalCurrency(
-                  Math.round(
-                    statistics.last_month_earnings *
-                      statistics.currencyRate *
-                      100
-                  ) / 100
-                )
+              ? formatCount(statistics.project_data.total_followers)
               : "Loading..."
           }}
         </div>
-        <span
-          class="smaller-value"
-          v-if="statistics && statistics?.targetCurrency !== 'USD'"
+        <span class="smaller-value" v-if="statistics"
+          >from {{ statistics.project_data.number_of_projects }} project{{
+            statistics.project_data.number_of_projects === 1 ? "" : "s"
+          }}</span
         >
-          Converted from USD${{
-            Math.round(statistics.last_month_earnings * 100) / 100
-          }}
-          (estimated)
-        </span>
       </div>
       <div class="grid-display__item">
         <div class="label">All Time Revenue</div>
@@ -60,7 +39,7 @@
             statistics // round to 2 decimal places
               ? toLocalCurrency(
                   Math.round(
-                    statistics.all_time_earnings * statistics.currencyRate * 100
+                    statistics.financial_data.converted.all_time * 100
                   ) / 100
                 )
               : "Loading..."
@@ -68,10 +47,41 @@
         </div>
         <span
           class="smaller-value"
-          v-if="statistics && statistics?.targetCurrency !== 'USD'"
+          v-if="
+            statistics && statistics?.financial_data.targetCurrency !== 'USD'
+          "
         >
-          Converted from USD${{
-            Math.round(statistics.all_time_earnings * 100) / 100
+          Converted from USD{{
+            formatCurrencyUS(
+              Math.round(statistics.financial_data.raw.all_time * 100) / 100
+            )
+          }}
+          (estimated)
+        </span>
+      </div>
+      <div class="grid-display__item">
+        <div class="label">Current Balance</div>
+        <div class="value">
+          {{
+            statistics // round to 2 decimal places
+              ? toLocalCurrency(
+                  Math.round(
+                    statistics.financial_data.converted.balance * 100
+                  ) / 100
+                )
+              : "Loading..."
+          }}
+        </div>
+        <span
+          class="smaller-value"
+          v-if="
+            statistics && statistics?.financial_data.targetCurrency !== 'USD'
+          "
+        >
+          Converted from USD{{
+            formatCurrencyUS(
+              Math.round(statistics.financial_data.raw.balance * 100) / 100
+            )
           }}
           (estimated)
         </span>
@@ -81,77 +91,30 @@
 </template>
 
 <script setup lang="ts">
-import axios from "@/axios";
 import { useDataStore } from "@/store";
-import { computedAsync } from "@vueuse/core";
-import { computed } from "vue";
 import { Card } from "omorphia";
-import { convertUSD, getCurrencies } from "@/currency";
 
 const store = useDataStore();
 
-const statistics = computedAsync(async () => {
-  if (store.cachedData.statistics) {
-    const now = Date.now();
+const statistics: any | undefined = store.cachedData.statistics;
 
-    if (store.cachedData.statistics.lastUpdated - now < 1000 * 60 * 5) {
-      return store.cachedData.statistics;
-    }
-  }
+const currencies: any = store.cachedData.currencies;
 
-  const { data } = await axios.get(`/user/${store.user.id}/projects`);
-
-  const total_followers = (data as unknown as any[]).reduce((acc, project) => {
-    return acc + project.followers;
-  }, 0);
-
-  const total_downloads = (data as unknown as any[]).reduce((acc, project) => {
-    return acc + project.downloads;
-  }, 0);
-
-  const number_of_projects = (data as unknown as any[]).length;
-
-  const { data: financial_data } = await axios.get(
-    `/user/${store.user.id}/payouts`
-  );
-
-  // Convert financial data to currencies.
-
-  const currencies = await getCurrencies();
-  const target = currencies[store.currency];
-  const rate = await convertUSD(target);
-
-  const statistics = {
-    lastUpdated: new Date(),
-    currencyRate: rate,
-    targetCurrency: target,
-    last_month_earnings: financial_data.last_month,
-    all_time_earnings: financial_data.all_time,
-    total_followers,
-    total_downloads,
-    number_of_projects,
-  };
-
-  store.cachedData.statistics = statistics;
-
-  return statistics;
-});
-
-const currencies = computedAsync(async () => {
-  return await getCurrencies();
-});
+function formatCurrencyUS(amount: number) {
+  return Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+}
 
 function toLocalCurrency(amount: number) {
-  if (!currencies || store.currency == 0) {
-    return Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(amount);
+  if (store.currency == 0) {
+    return formatCurrencyUS(amount);
   }
 
   return Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: currencies.value[store.currency],
+    currency: Object.keys(currencies)[store.currency],
   }).format(amount);
 }
 

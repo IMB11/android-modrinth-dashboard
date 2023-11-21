@@ -29,6 +29,7 @@
             name="currency"
             :options="currencies"
             v-model="selectedCurrency"
+            :displayName="(currencyName: string) => Object.keys(currencySymbols).includes(currencyName) ? `${currencyName} (${currencySymbols[currencyName]})` : currencyName"
             class="select stylized-select"
           />
         </div>
@@ -52,7 +53,7 @@ import { useDataStore } from "@/store";
 import { computed, ref } from "vue";
 import UserComponent from "@/components/UserComponent.vue";
 import { asyncComputed } from "@vueuse/core";
-import { getCurrencies } from "@/currency";
+import { getCurrencies, symbols as currencySymbols } from "@/currency";
 
 const store = useDataStore();
 
@@ -66,8 +67,8 @@ const currencies = asyncComputed(async () => {
 
 const selectedCurrency = computed({
   get: () => currencies.value[store.currency],
-  set: (s) => {
-    store.setCurrency(currencies.value.indexOf(s));
+  set: async (s) => {
+    await store.setCurrency(currencies.value.indexOf(s));
     // Reload
     window.location.reload();
   },
