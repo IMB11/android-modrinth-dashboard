@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.mineblock11.modrinth',
   appName: 'Modrinth Dashboard',
   webDir: 'dist',
   server: {

@@ -7,11 +7,10 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test:e2e": "cypress run",
-    "test:unit": "vitest",
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "^5.5.1",
     "@capacitor/app": "5.0.6",
     "@capacitor/core": "5.5.1",
     "@capacitor/haptics": "5.0.6",
@@ -40,6 +39,7 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "5.5.1",
     "@vitejs/plugin-legacy": "^4.0.2",
     "@vitejs/plugin-vue": "^4.0.0",
