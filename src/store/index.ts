@@ -9,12 +9,12 @@ export const useDataStore = defineStore('data', {
     theme: 'light',
     token: undefined,
     user: undefined,
-    formatNumbers: true,
+    formatNumbers: false,
     currency: 0,
     cachedData: {}
   } as unknown as {
     theme: "light" | "dark", token: string | undefined, user: any | undefined, formatNumbers: boolean, cachedData: {
-      statistics: StatisticData,
+      statistics: StatisticData | undefined,
       currencies: {
         [key: string]: number
       }

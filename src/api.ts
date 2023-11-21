@@ -9,6 +9,12 @@ export interface StatisticData {
       all_time: number;
       balance: number;
     };
+    transactions: {
+      raw: number;
+      converted: number;
+      date: Date;
+      status: string;
+    }[];
     raw: {
       last_month: number;
       all_time: number;
@@ -57,6 +63,17 @@ export async function getStatisticalData(store: any): Promise<StatisticData> {
     all_time: financial_data.all_time * rate,
     balance: store.user.payout_data.balance * rate,
   };
+
+  const formattedHistory = [];
+
+  for (const transaction of financial_data.payouts) {
+    formattedHistory.push({
+      raw: transaction.amount,
+      converted: transaction.amount * rate,
+      date: new Date(transaction.created),
+      status: transaction.status,
+    });
+  }
   //#endregion
 
   const statistics: StatisticData = {
@@ -68,6 +85,7 @@ export async function getStatisticalData(store: any): Promise<StatisticData> {
         all_time: financial_data.all_time,
         balance: store.user.payout_data.balance,
       },
+      transactions: formattedHistory,
       currencyRate: rate,
       targetCurrency: target,
     },

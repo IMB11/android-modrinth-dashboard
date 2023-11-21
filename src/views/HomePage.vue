@@ -18,7 +18,7 @@
         >
       </div>
       <div class="grid-display__item">
-        <div class="label">Total Follows</div>
+        <div class="label">Total Followers</div>
         <div class="value">
           {{
             statistics
@@ -127,63 +127,3 @@ function formatCount(amount: number) {
   }).format(amount);
 }
 </script>
-
-<style scoped lang="scss">
-// Convert the above into scss
-
-.grid-display {
-  display: grid;
-  grid-gap: var(--gap-md);
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-
-  .grid-display__item {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    justify-content: flex-start;
-    background-color: var(--color-bg);
-    border-radius: var(--radius-md);
-    padding: var(--gap-lg);
-    gap: var(--gap-md);
-
-    .label {
-      color: var(--color-base);
-      font-weight: bold;
-      font-size: 1rem;
-    }
-
-    .value {
-      color: var(--color-contrast);
-      font-weight: bold;
-      font-size: 2rem;
-    }
-
-    .goto-link {
-      margin-top: auto;
-    }
-
-    .smaller-value {
-      font-size: 0.85rem;
-      font-style: italic;
-      color: var(--color-base);
-    }
-  }
-}
-
-.grid-display.flow {
-  display: flex;
-  flex-direction: column;
-
-  .grid-display__item .value {
-    font-size: 1.5rem;
-  }
-}
-
-.grid-display.width-12 {
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-}
-
-.grid-display.width-16 {
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-}
-</style>

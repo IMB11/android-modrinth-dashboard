@@ -41,6 +41,7 @@ function getStyleForRoute(route: any) {
 function getIconForRoute(route: any) {
   if (route.name === "Home") return HomeIcon;
   if (route.name === "Settings") return SettingsIcon;
+  if (route.name === "Monetization") return CurrencyIcon;
 }
 
 function gotoRoute(route: any) {

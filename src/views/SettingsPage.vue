@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Settings</h1>
+    <UserComponent />
     <Card>
       <h3 class="section-title"><PaintBrushIcon />Appearance</h3>
       <p>Customize the appearance of the app.</p>
@@ -23,19 +24,37 @@
             @change="store.setFormatNumbers(!store.formatNumbers)"
           />
         </div>
-        <div class="responsive" v-if="currencies">
+        <div :class="`responsive loadable ${currencies ? 'loaded' : ''}`">
           <h4>Currency</h4>
           <DropdownSelect
             name="currency"
+            v-if="currencies"
             :options="currencies"
             v-model="selectedCurrency"
             :displayName="(currencyName: string) => Object.keys(currencySymbols).includes(currencyName) ? `${currencyName} (${currencySymbols[currencyName]})` : currencyName"
             class="select stylized-select"
           />
+          <DropdownSelect
+            v-else
+            class="select stylized-select"
+          ></DropdownSelect>
         </div>
       </div>
     </Card>
-    <UserComponent />
+    <Card class="page-extender">
+      <h3>Update Checker</h3>
+      <p v-if="!needsUpdate(latestAppVersion?.tag_name ?? '0.0.0', appVersion)">
+        <CheckIcon style="color: var(--color-brand)" /> No updates found.
+      </p>
+      <p v-else class="update-available-flex">
+        <span
+          ><span style="color: red"><XIcon /> An update is available.</span>
+          <br /><br />You are on version <code>{{ appVersion }}</code> yet the
+          latest is <code>{{ latestAppVersion?.tag_name }}</code></span
+        ><br /><br />
+        <Button @click="openRelease"><GitHubIcon />View On GitHub</Button>
+      </p>
+    </Card>
   </div>
 </template>
 
@@ -48,12 +67,17 @@ import {
   MoonIcon,
   Toggle,
   DropdownSelect,
+  XIcon,
 } from "omorphia";
 import { useDataStore } from "@/store";
 import { computed, ref } from "vue";
 import UserComponent from "@/components/UserComponent.vue";
 import { asyncComputed } from "@vueuse/core";
 import { getCurrencies, symbols as currencySymbols } from "@/currency";
+import axios from "@/axios";
+import semver from "semver";
+
+const appVersion = "1.0.0";
 
 const store = useDataStore();
 
@@ -63,6 +87,22 @@ const isDark = computed(() => {
 
 const currencies = asyncComputed(async () => {
   return await getCurrencies();
+});
+
+function needsUpdate(versionA: string, versionB: string) {
+  return semver.gt(versionA, versionB);
+}
+
+function openRelease() {
+  window.open(latestAppVersion.value.html_url, "_blank", "noreferrer");
+}
+
+const latestAppVersion: any = asyncComputed(async () => {
+  return (
+    await axios.get(
+      "https://api.github.com/repos/mineblock11/android-modrinth-dashboard/releases/latest"
+    )
+  ).data;
 });
 
 const selectedCurrency = computed({

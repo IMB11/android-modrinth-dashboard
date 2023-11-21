@@ -10,7 +10,7 @@
       <div class="profile_button_group">
         <Button @click="handleLogout()"> <LogOutIcon />Logout </Button>
         <Button :disabled="disableRefresh" @click="handleRefresh()">
-          <UpdatedIcon />Refresh
+          <UpdatedIcon />{{ disableRefresh ? "Refreshing..." : "Refresh" }}
         </Button>
       </div>
     </div>
@@ -22,16 +22,24 @@ import { Button, Avatar, Card, UpdatedIcon, LogOutIcon } from "omorphia";
 import { useDataStore } from "@/store";
 import { ref } from "vue";
 import router from "@/router";
+import { getStatisticalData } from "@/api";
 
 const store = useDataStore();
 
 const disableRefresh = ref(false);
 
-function handleRefresh() {}
+async function handleRefresh() {
+  disableRefresh.value = true;
+
+  await store.refreshUser();
+  store.cachedData.statistics = await getStatisticalData(store);
+
+  disableRefresh.value = false;
+}
 
 function handleLogout() {
   store.setToken(undefined);
-  store.cachedData = { statistics: undefined };
+  store.cachedData.statistics = undefined;
   window.location.reload();
 }
 </script>
